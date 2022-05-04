@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Flask-项目结构 | xcc</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/logo/profile2.png">
+    <meta name="description" content="尽管在单个脚本文件中编写小型 Web 应用很方便，但这种方法的伸缩性不好。应用变复杂后，使用单个大型源码文件会导致很多问题。">
+    
+    <link rel="preload" href="/assets/css/0.styles.3443fe78.css" as="style"><link rel="preload" href="/assets/js/app.a4ae779a.js" as="script"><link rel="preload" href="/assets/js/6.b946c0f4.js" as="script"><link rel="preload" href="/assets/js/3.e8e39a4f.js" as="script"><link rel="preload" href="/assets/js/14.6d058d88.js" as="script"><link rel="prefetch" href="/assets/js/10.17e833a5.js"><link rel="prefetch" href="/assets/js/11.f4383e7a.js"><link rel="prefetch" href="/assets/js/12.27f151ee.js"><link rel="prefetch" href="/assets/js/13.0ccfacc6.js"><link rel="prefetch" href="/assets/js/15.6db4526f.js"><link rel="prefetch" href="/assets/js/16.9a24eddf.js"><link rel="prefetch" href="/assets/js/17.73e5d246.js"><link rel="prefetch" href="/assets/js/18.6c922925.js"><link rel="prefetch" href="/assets/js/19.0280c56b.js"><link rel="prefetch" href="/assets/js/20.5fac7fbf.js"><link rel="prefetch" href="/assets/js/21.affbe8ed.js"><link rel="prefetch" href="/assets/js/22.af95c261.js"><link rel="prefetch" href="/assets/js/23.40197ffe.js"><link rel="prefetch" href="/assets/js/24.51f6c374.js"><link rel="prefetch" href="/assets/js/25.a68c27d1.js"><link rel="prefetch" href="/assets/js/26.134b24da.js"><link rel="prefetch" href="/assets/js/27.166eff6d.js"><link rel="prefetch" href="/assets/js/28.1359ecec.js"><link rel="prefetch" href="/assets/js/29.11814f07.js"><link rel="prefetch" href="/assets/js/30.4b41ca5f.js"><link rel="prefetch" href="/assets/js/31.885df829.js"><link rel="prefetch" href="/assets/js/32.c10e4c23.js"><link rel="prefetch" href="/assets/js/33.5a3399a6.js"><link rel="prefetch" href="/assets/js/4.e8fce9c7.js"><link rel="prefetch" href="/assets/js/5.7bf97a98.js"><link rel="prefetch" href="/assets/js/7.7d46e129.js"><link rel="prefetch" href="/assets/js/8.8d71c747.js"><link rel="prefetch" href="/assets/js/9.2f7cc487.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.1f3cd5b5.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3443fe78.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">xcc </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/" class="nav-link">Home</a></li><li class="nav-item"><a href="/tag/" class="nav-link">Tags</a></li><li class="nav-item"><a href="https://rebel-writer-12b.notion.site/Engineering-Wiki-6f04c16f81ed4fbd8f6d599237c98dfe" target="_blank" rel="noopener noreferrer" class="nav-link external">Notions</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">xcc </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/" class="nav-link">Home</a></li><li class="mobile-nav-item"><a href="/tag/" class="nav-link">Tags</a></li><li class="mobile-nav-item"><a href="https://rebel-writer-12b.notion.site/Engineering-Wiki-6f04c16f81ed4fbd8f6d599237c98dfe" target="_blank" rel="noopener noreferrer" class="nav-link external">Notions</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        Flask-项目结构
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">xucongcong</span> <!----></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2021-03-04T00:00:00.000Z">
+      2021-03-04
+    </time></div> <ul itemprop="keywords" class="post-meta-tags"><li class="post-tag" data-v-532d3a9c><a href="/tag/Flask" data-v-532d3a9c><span data-v-532d3a9c>Flask</span></a></li><li class="post-tag" data-v-532d3a9c><a href="/tag/Python" data-v-532d3a9c><span data-v-532d3a9c>Python</span></a></li></ul></div></header> <div itemprop="articleBody" class="content__default"><p>尽管在单个脚本文件中编写小型 Web 应用很方便，但这种方法的伸缩性不好。应用变复杂后，使用单个大型源码文件会导致很多问题。不同于多数其他的 Web 框架，Flask 并不强制要求大型项目使用特定的组织方式。</p> <br> <h2 id="_1、项目结构"><a href="#_1、项目结构" class="header-anchor">#</a> 1、项目结构</h2> <div class="language- extra-class"><pre class="language-text"><code>|-flasky
+  |-app/
+    |-templates/
+    |-static/
+    |-main/
+      |-__init__.py
+      |-errors.py
+      |-forms.py
+      |-views.py
+    |-__init__.py
+    |-email.py
+    |-models.py
+  |-migrations/
+  |-tests/
+    |-__init__.py
+    |-test*.py
+  |-venv/
+  |-requirements.txt
+  |-config.py
+  |-flasky.py
+
+</code></pre></div><ul><li><p>Flask 应用一般保存在名为 app 的包中；</p></li> <li><p>和之前一样，数据库迁移脚本在 migrations 文件夹中；</p></li> <li><p>单元测试在 tests 包中编写；</p></li> <li><p>和之前一样，Python 虚拟环境在 venv 文件夹中。</p></li> <li><p>requirements.txt 列出了所有依赖包，便于在其他计算机中重新生成相同的虚拟环境；</p></li> <li><p>config.py 存储配置；</p></li> <li><p>flasky.py 定义 Flask 应用实例，同时还有一些辅助管理应用的任务。</p></li></ul> <br> <h2 id="_2、配置选项"><a href="#_2、配置选项" class="header-anchor">#</a> 2、配置选项</h2> <p><code>config.py</code>：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> os
+
+basedir <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>abspath<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>__file__<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">class</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># session加密密钥</span>
+    SECRET_KEY <span class="token operator">=</span> os<span class="token punctuation">.</span>environ<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'SECRET_KEY'</span><span class="token punctuation">)</span> <span class="token keyword">or</span> <span class="token string">'hard to guess string'</span>
+
+    <span class="token comment"># ...</span>
+    
+	<span class="token comment"># 定义init_app() 方法，可以执行更复杂的初始化过程</span>
+    <span class="token decorator annotation punctuation">@staticmethod</span>
+    <span class="token keyword">def</span> <span class="token function">init_app</span><span class="token punctuation">(</span>app<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+
+
+<span class="token keyword">class</span> <span class="token class-name">DevelopmentConfig</span><span class="token punctuation">(</span>Config<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    DEBUG <span class="token operator">=</span> <span class="token boolean">True</span>
+    <span class="token comment"># SQLALCHEMY_DATABASE_URI = ...</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TestingConfig</span><span class="token punctuation">(</span>Config<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    TESTING <span class="token operator">=</span> <span class="token boolean">True</span>
+    <span class="token comment"># SQLALCHEMY_DATABASE_URI = ...</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ProductionConfig</span><span class="token punctuation">(</span>Config<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># SQLALCHEMY_DATABASE_URI = ...</span>
+
+
+config <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">'development'</span><span class="token punctuation">:</span> DevelopmentConfig<span class="token punctuation">,</span>
+    <span class="token string">'testing'</span><span class="token punctuation">:</span> TestingConfig<span class="token punctuation">,</span>
+    <span class="token string">'production'</span><span class="token punctuation">:</span> ProductionConfig<span class="token punctuation">,</span>
+    <span class="token string">'default'</span><span class="token punctuation">:</span> DevelopmentConfig
+<span class="token punctuation">}</span>
+
+</code></pre></div><br> <h2 id="_3、使用工厂函数"><a href="#_3、使用工厂函数" class="header-anchor">#</a> 3、使用工厂函数</h2> <p><code>app/__init__.py</code>：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask
+<span class="token keyword">from</span> flask_sqlalchemy <span class="token keyword">import</span> SQLAlchemy
+<span class="token comment"># ...</span>
+<span class="token keyword">from</span> config <span class="token keyword">import</span> config
+
+db <span class="token operator">=</span> SQLAlchemy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">create_app</span><span class="token punctuation">(</span>config_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+    app<span class="token punctuation">.</span>config<span class="token punctuation">.</span>from_object<span class="token punctuation">(</span>config<span class="token punctuation">[</span>config_name<span class="token punctuation">]</span><span class="token punctuation">)</span>
+	<span class="token comment"># init_app() 方法，用于执行更复杂的初始化过程</span>
+    config<span class="token punctuation">[</span>config_name<span class="token punctuation">]</span><span class="token punctuation">.</span>init_app<span class="token punctuation">(</span>app<span class="token punctuation">)</span>
+
+    db<span class="token punctuation">.</span>init_app<span class="token punctuation">(</span>app<span class="token punctuation">)</span>
+
+    <span class="token keyword">from</span> <span class="token punctuation">.</span>main <span class="token keyword">import</span> main <span class="token keyword">as</span> main_blueprint
+    app<span class="token punctuation">.</span>register_blueprint<span class="token punctuation">(</span>main_blueprint<span class="token punctuation">)</span>
+    
+    <span class="token keyword">from</span> <span class="token punctuation">.</span>auth <span class="token keyword">import</span> auth <span class="token keyword">as</span> auth_blueprint
+    app<span class="token punctuation">.</span>register_blueprint<span class="token punctuation">(</span>auth_blueprint<span class="token punctuation">,</span> url_prefix<span class="token operator">=</span><span class="token string">'/auth'</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> app
+</code></pre></div><br> <h2 id="_4、使用蓝图"><a href="#_4、使用蓝图" class="header-anchor">#</a> 4、使用蓝图</h2> <p><code>main/__init__.py</code>：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> flask <span class="token keyword">import</span> Blueprint
+
+main <span class="token operator">=</span> Blueprint<span class="token punctuation">(</span><span class="token string">'main'</span><span class="token punctuation">,</span> __name__<span class="token punctuation">)</span>
+
+<span class="token keyword">from</span> <span class="token punctuation">.</span> <span class="token keyword">import</span> views<span class="token punctuation">,</span> errors
+</code></pre></div><br> <p><code>main/views.py</code>：</p> <div class="language- extra-class"><pre class="language-text"><code>from . import main
+# ...
+
+@main.route('/')
+def index():
+    # ...
+</code></pre></div><blockquote><p>模板中、views.py 中的url_for()函数要使用 'main.login'</p></blockquote> <br> <h2 id="_5、应用脚本"><a href="#_5、应用脚本" class="header-anchor">#</a> 5、应用脚本</h2> <p><code>flasky.py</code>：</p> <div class="language- extra-class"><pre class="language-text"><code>import os
+from app import create_app, db
+from app.models import User, Role
+from flask_migrate import Migrate
+
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+migrate = Migrate(app, db)
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Role=Role)
+</code></pre></div><br> <h2 id="_6、单元测试"><a href="#_6、单元测试" class="header-anchor">#</a> 6、单元测试</h2> <p><code>tests/test_basics.py</code>：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">import</span> unittest
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> current_app
+<span class="token keyword">from</span> app <span class="token keyword">import</span> create_app<span class="token punctuation">,</span> db
+
+<span class="token keyword">class</span> <span class="token class-name">BasicsTestCase</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">setUp</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>app <span class="token operator">=</span> create_app<span class="token punctuation">(</span><span class="token string">'testing'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>app_context <span class="token operator">=</span> self<span class="token punctuation">.</span>app<span class="token punctuation">.</span>app_context<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>app_context<span class="token punctuation">.</span>push<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        db<span class="token punctuation">.</span>create_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">tearDown</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>remove<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        db<span class="token punctuation">.</span>drop_all<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>app_context<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_app_exists</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertFalse<span class="token punctuation">(</span>current_app <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_app_is_testing</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertTrue<span class="token punctuation">(</span>current_app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">'TESTING'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre></div><br> <p><code>flasky.py</code>：</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token comment"># ...</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>cli<span class="token punctuation">.</span>command</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">&quot;&quot;&quot;Run the unit tests.&quot;&quot;&quot;</span>
+    <span class="token keyword">import</span> unittest
+    tests <span class="token operator">=</span> unittest<span class="token punctuation">.</span>TestLoader<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>discover<span class="token punctuation">(</span><span class="token string">'tests'</span><span class="token punctuation">)</span>
+    unittest<span class="token punctuation">.</span>TextTestRunner<span class="token punctuation">(</span>verbosity<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span>tests<span class="token punctuation">)</span>
+
+</code></pre></div><br> <div class="language-bash extra-class"><pre class="language-bash"><code>$ flask <span class="token builtin class-name">test</span> 
+</code></pre></div></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#_1、项目结构" title="1、项目结构">1、项目结构</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_2、配置选项" title="2、配置选项">2、配置选项</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_3、使用工厂函数" title="3、使用工厂函数">3、使用工厂函数</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_4、使用蓝图" title="4、使用蓝图">4、使用蓝图</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_5、应用脚本" title="5、应用脚本">5、应用脚本</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_6、单元测试" title="6、单元测试">6、单元测试</a></div></div></div></div> <footer class="footer" data-v-8eb634d6><div class="footer-left-wrap" data-v-8eb634d6><ul class="contact" data-v-8eb634d6><li class="contact-item" data-v-8eb634d6><a href="https://github.com/awesomexu" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-8eb634d6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-8eb634d6><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-8eb634d6></path></svg>
+          
+        </a></li><li class="contact-item" data-v-8eb634d6><a href="mailto:xcc_mail@qq.com" class="nav-link external" data-v-8eb634d6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-8eb634d6><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-8eb634d6></path><polyline points="22,6 12,13 2,6" data-v-8eb634d6></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-8eb634d6><ul class="copyright" data-v-8eb634d6><li class="copyright-item" data-v-8eb634d6><a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-8eb634d6>Privacy Policy</a></li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.a4ae779a.js" defer></script><script src="/assets/js/6.b946c0f4.js" defer></script><script src="/assets/js/3.e8e39a4f.js" defer></script><script src="/assets/js/14.6d058d88.js" defer></script>
+  </body>
+</html>
