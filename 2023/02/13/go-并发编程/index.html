@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Go—并发编程 | xcc</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/logo/profile2.png">
+    <meta name="description" content="CSP模型是Go语言支持的主流并发模型，Go还支持传统的、基于共享内存的并发模型，并提供了基本的低级别同步原语（互斥锁、条件变量、读写锁、原子操作等）。">
+    
+    <link rel="preload" href="/assets/css/0.styles.fe33cd63.css" as="style"><link rel="preload" href="/assets/js/app.8f62a037.js" as="script"><link rel="preload" href="/assets/js/6.b8e708a3.js" as="script"><link rel="preload" href="/assets/js/3.3f44ea24.js" as="script"><link rel="preload" href="/assets/js/43.23bd57f8.js" as="script"><link rel="prefetch" href="/assets/js/10.2a29879b.js"><link rel="prefetch" href="/assets/js/11.465376b6.js"><link rel="prefetch" href="/assets/js/12.16ec2088.js"><link rel="prefetch" href="/assets/js/13.8401e0b9.js"><link rel="prefetch" href="/assets/js/14.128da524.js"><link rel="prefetch" href="/assets/js/15.5325ae8c.js"><link rel="prefetch" href="/assets/js/16.0c396afd.js"><link rel="prefetch" href="/assets/js/17.e1ea1411.js"><link rel="prefetch" href="/assets/js/18.1743c483.js"><link rel="prefetch" href="/assets/js/19.8372c7a4.js"><link rel="prefetch" href="/assets/js/20.a57b6ac2.js"><link rel="prefetch" href="/assets/js/21.309ad047.js"><link rel="prefetch" href="/assets/js/22.3749550e.js"><link rel="prefetch" href="/assets/js/23.befc7934.js"><link rel="prefetch" href="/assets/js/24.91c37a3e.js"><link rel="prefetch" href="/assets/js/25.e5e36c46.js"><link rel="prefetch" href="/assets/js/26.924d4716.js"><link rel="prefetch" href="/assets/js/27.7dd0ab4c.js"><link rel="prefetch" href="/assets/js/28.35f2f03c.js"><link rel="prefetch" href="/assets/js/29.834ade1f.js"><link rel="prefetch" href="/assets/js/30.9188c9d2.js"><link rel="prefetch" href="/assets/js/31.4cc890a9.js"><link rel="prefetch" href="/assets/js/32.86a374c5.js"><link rel="prefetch" href="/assets/js/33.3d4d3929.js"><link rel="prefetch" href="/assets/js/34.78d62ab7.js"><link rel="prefetch" href="/assets/js/35.369fe440.js"><link rel="prefetch" href="/assets/js/36.5f19581b.js"><link rel="prefetch" href="/assets/js/37.71cf5d2f.js"><link rel="prefetch" href="/assets/js/38.c12daea6.js"><link rel="prefetch" href="/assets/js/39.06d5dabf.js"><link rel="prefetch" href="/assets/js/4.84b14fb6.js"><link rel="prefetch" href="/assets/js/40.54fb0199.js"><link rel="prefetch" href="/assets/js/41.de50fdc7.js"><link rel="prefetch" href="/assets/js/42.8ccab7c2.js"><link rel="prefetch" href="/assets/js/44.87e89878.js"><link rel="prefetch" href="/assets/js/45.274dc43c.js"><link rel="prefetch" href="/assets/js/46.7b84b85a.js"><link rel="prefetch" href="/assets/js/47.566aeb5f.js"><link rel="prefetch" href="/assets/js/48.338cc282.js"><link rel="prefetch" href="/assets/js/5.8613c109.js"><link rel="prefetch" href="/assets/js/7.e3359995.js"><link rel="prefetch" href="/assets/js/8.a97dd115.js"><link rel="prefetch" href="/assets/js/9.27a33244.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.d9e995a1.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.fe33cd63.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">xcc </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/" class="nav-link">Home</a></li><li class="nav-item"><a href="/tag/" class="nav-link">Tags</a></li><li class="nav-item"><a href="https://rebel-writer-12b.notion.site/Engineering-Wiki-6f04c16f81ed4fbd8f6d599237c98dfe" target="_blank" rel="noopener noreferrer" class="nav-link external">Notions</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">xcc </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/" class="nav-link">Home</a></li><li class="mobile-nav-item"><a href="/tag/" class="nav-link">Tags</a></li><li class="mobile-nav-item"><a href="https://rebel-writer-12b.notion.site/Engineering-Wiki-6f04c16f81ed4fbd8f6d599237c98dfe" target="_blank" rel="noopener noreferrer" class="nav-link external">Notions</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        Go—并发编程
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">xucongcong</span> <!----></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2023-02-13T00:00:00.000Z">
+      2023-02-13
+    </time></div> <ul itemprop="keywords" class="post-meta-tags"><li class="post-tag" data-v-532d3a9c><a href="/tag/Go" data-v-532d3a9c><span data-v-532d3a9c>Go</span></a></li></ul></div></header> <div itemprop="articleBody" class="content__default"><p>Go 语言从设计伊始，就将解决传统并发模型的问题作为 Go 的一个目标，并在新并发模型设计中借鉴了著名计算机科学家Tony Hoare提出的 CSP（Communicating Sequential Processes）并发模型。</p> <p>虽然 CSP 模型已经成为 Go 语言支持的主流并发模型，但 Go 也支持传统的、基于共享内存的并发模型，并提供了基本的低级别同步原语（sync 包中的互斥锁、条件变量、读写锁、原子操作等）。</p> <h2 id="_1-goroutine"><a href="#_1-goroutine" class="header-anchor">#</a> 1. goroutine</h2> <p>main 函数会默认启动一个 goroutine 去执行。</p> <p>启动一个 goroutine：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">sayhi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;hello&quot;</span><span class="token punctuation">)</span>
+		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;start sayhi!&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">sayhi</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;after start sayhi!&quot;</span><span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">6</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span> <span class="token comment">// 主协程内容执行完后，子 协程会退出，所以这里等待</span>
+<span class="token punctuation">}</span>
+</code></pre></div><aside>
+💡 除了从main返回或者退出程序，没有程序化的方法让一个goroutine停止，只能通过通信让其自己停止。
+</aside> <h2 id="_2-基于csp模型实现并发"><a href="#_2-基于csp模型实现并发" class="header-anchor">#</a> 2. 基于CSP模型实现并发</h2> <p>Go 语言并发模型提倡使用CSP并发模型。在Go中，与“Process”对应的是 goroutine。为了实现 CSP 并发模型中的输入和输出原语，Go 还引入了 goroutine（P）之间的通信原语channel。</p> <h3 id="_2-1-channel"><a href="#_2-1-channel" class="header-anchor">#</a> 2.1 channel</h3> <hr> <p>基本操作：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// 创建一个int型的channel</span>
+<span class="token keyword">var</span> ch <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> in<span class="token punctuation">)</span>
+
+<span class="token comment">// 发送到channel</span>
+ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+
+<span class="token comment">// 接收</span>
+data <span class="token operator">:=</span> <span class="token operator">&lt;-</span> ch  <span class="token comment">// 接收并赋值</span>
+<span class="token operator">&lt;-</span> ch          <span class="token comment">// 接收并忽略结果</span>
+
+<span class="token comment">// 关闭</span>
+<span class="token function">close</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+</code></pre></div><p>关于关闭channel：只有在通知接收方数据发送完毕时才需关闭。</p> <p>对与关闭后的channel：</p> <ul><li>向一个关闭的channel发送值会导致panic</li> <li>关闭一个已关闭的channel会导致panic</li> <li>从一个关闭的通道接收值会一致或取值，只到为空</li> <li>从一个已关闭且没有值的channel执行接收操作会得到对应类型的默认值</li></ul> <p>无缓冲channel（实现同步）：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span> <span class="token comment">// 失败，无缓冲的channel必须有人接收才能发送，否则会阻塞形成死锁</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>有缓冲channel（实现异步）：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch <span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;开始接收&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> <span class="token punctuation">{</span>
+		data <span class="token operator">:=</span> <span class="token operator">&lt;-</span> ch <span class="token comment">// 阻塞操作</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;received: &quot;</span><span class="token punctuation">,</span>data<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;len, cap =&gt;&quot;</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// len, cap =&gt; 0 5</span>
+
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">20</span>
+
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;发送成功&quot;</span><span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>判断channel是否还能取值：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// 方式1</span>
+data<span class="token punctuation">,</span> ok <span class="token operator">:=</span> <span class="token operator">&lt;-</span> ch      <span class="token comment">// channel已关闭且没有值时，ok=false</span>
+
+<span class="token comment">// 方式2</span>
+<span class="token keyword">for</span> data <span class="token operator">:=</span> <span class="token keyword">range</span> ch <span class="token punctuation">{</span> <span class="token comment">// channel已关闭且没有值时，会自动退出for迭代</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;received: &quot;</span><span class="token punctuation">,</span>data<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>限制通道的操作（单向通道）：在传递channel给多个goroutine时，可以在传参时限制通道方向：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  <span class="token comment">// 只读channel</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;开始接收&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> data <span class="token operator">:=</span> <span class="token keyword">range</span> ch <span class="token punctuation">{</span>
+		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;received: &quot;</span><span class="token punctuation">,</span>data<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;退出for迭代&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">produce</span><span class="token punctuation">(</span>ch <span class="token keyword">chan</span><span class="token operator">&lt;-</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  <span class="token comment">// 只写channel</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;开始发送&quot;</span><span class="token punctuation">)</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">20</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">20</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	<span class="token function">close</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;发送完毕&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">produce</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">7</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;main close&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_2-2-select多路复用"><a href="#_2-2-select多路复用" class="header-anchor">#</a> 2.2 select多路复用</h3> <hr> <p>从channel接收数据是阻塞操作，如果需要从多个channel接收数据，一般通过轮训处理：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch1<span class="token punctuation">,</span> ch2 <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;开始接收&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> <span class="token punctuation">{</span>
+		data<span class="token punctuation">,</span> ok1 <span class="token operator">:=</span> <span class="token operator">&lt;-</span> ch1
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;recevie ch1 data =&gt;&quot;</span><span class="token punctuation">,</span>data<span class="token punctuation">,</span>ok1<span class="token punctuation">)</span>
+		data2<span class="token punctuation">,</span> ok2 <span class="token operator">:=</span> <span class="token operator">&lt;-</span> ch2
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;recevie ch2 data =&gt;&quot;</span><span class="token punctuation">,</span>data2<span class="token punctuation">,</span>ok2<span class="token punctuation">)</span>
+		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">produce1</span><span class="token punctuation">(</span>ch <span class="token keyword">chan</span><span class="token operator">&lt;-</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;p1 开始发送&quot;</span><span class="token punctuation">)</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">20</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">20</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">10</span>
+	<span class="token function">close</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;p1发送完毕&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">produce2</span><span class="token punctuation">(</span>ch <span class="token keyword">chan</span><span class="token operator">&lt;-</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;p2 开始发送&quot;</span><span class="token punctuation">)</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">100</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">200</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">100</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">200</span>
+	ch <span class="token operator">&lt;-</span> <span class="token number">100</span>
+	<span class="token function">close</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;p2 发送完毕&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	ch1 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	ch2 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">produce1</span><span class="token punctuation">(</span>ch1<span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">produce2</span><span class="token punctuation">(</span>ch2<span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch1<span class="token punctuation">,</span> ch2<span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">7</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;main close&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>轮训性能很差，同时从多个channel接收数据可以使用select关键字。select操作类似switch语句，有多个分支，select会一直等待，直到某个case可用，上例改造后：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">receive</span><span class="token punctuation">(</span>ch1<span class="token punctuation">,</span> ch2 <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;开始接收&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> <span class="token punctuation">{</span>
+		<span class="token keyword">select</span> <span class="token punctuation">{</span>
+		<span class="token keyword">case</span> data1<span class="token punctuation">,</span>ok1 <span class="token operator">:=</span> <span class="token operator">&lt;-</span>ch1<span class="token punctuation">:</span>
+			<span class="token keyword">if</span> ok1 <span class="token punctuation">{</span>
+				fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;recevie ch1 data =&gt;&quot;</span><span class="token punctuation">,</span> data1<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token keyword">case</span> data2<span class="token punctuation">,</span>ok2 <span class="token operator">:=</span> <span class="token operator">&lt;-</span>ch2<span class="token punctuation">:</span>
+			<span class="token keyword">if</span> ok2 <span class="token punctuation">{</span>
+				fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;recevie ch2 data =&gt;&quot;</span><span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token operator">/</span><span class="token number">5</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>可以配合 time.Ticker 为协程设定超时时间：</p> <div class="language-go extra-class"><pre class="language-go"><code>timer <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">NewTimer</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+
+<span class="token keyword">select</span> <span class="token punctuation">{</span>
+	<span class="token keyword">case</span> <span class="token operator">&lt;-</span> ch<span class="token punctuation">:</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;receieved from ch =&gt;&quot;</span><span class="token punctuation">,</span> ch<span class="token punctuation">)</span>
+	<span class="token keyword">case</span> <span class="token operator">&lt;-</span> timer<span class="token punctuation">.</span>C<span class="token punctuation">:</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;timeout wating from ch&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_3-基于共享变量实现并发"><a href="#_3-基于共享变量实现并发" class="header-anchor">#</a> 3. 基于共享变量实现并发</h2> <h3 id="_3-1-同步-sync-waitgroup"><a href="#_3-1-同步-sync-waitgroup" class="header-anchor">#</a> 3.1 同步 sync.WaitGroup</h3> <hr> <p>同步：就是并发进程/线程在一些关键点上可能需要互相等待与互通消息，这种相互制约的等待与互通信息称为进程/线程同步。以下示例通过sync包下的WaitGroup实现同步。</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+<span class="token keyword">var</span> monney <span class="token operator">=</span> <span class="token number">100</span>
+
+<span class="token keyword">func</span> <span class="token function">add1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	monney <span class="token operator">+=</span> <span class="token number">1</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">dec1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	monney <span class="token operator">-=</span> <span class="token number">1</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		<span class="token keyword">go</span> <span class="token function">add1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		<span class="token keyword">go</span> <span class="token function">dec1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;money =&gt;&quot;</span><span class="token punctuation">,</span> monney<span class="token punctuation">)</span> <span class="token comment">// money最终结果可能不是100</span>
+<span class="token punctuation">}</span>
+</code></pre></div><aside>
+💡 也可以通过channel实现相同的同步效果
+</aside> <h3 id="_3-2-互斥锁-sync-mutex"><a href="#_3-2-互斥锁-sync-mutex" class="header-anchor">#</a> 3.2 互斥锁 sync.Mutex</h3> <hr> <p>3.1 例中并发竞争共享资源的时候，可以使用互斥锁来避免资源竞争造成的资源混乱：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+<span class="token keyword">var</span> lock sync<span class="token punctuation">.</span>Mutex
+<span class="token keyword">var</span> monney <span class="token operator">=</span> <span class="token number">100</span>
+
+<span class="token keyword">func</span> <span class="token function">add1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	monney <span class="token operator">+=</span> <span class="token number">1</span>
+	lock<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">dec1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	monney <span class="token operator">-=</span> <span class="token number">1</span>
+	lock<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		<span class="token keyword">go</span> <span class="token function">add1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		<span class="token keyword">go</span> <span class="token function">dec1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;money =&gt;&quot;</span><span class="token punctuation">,</span> monney<span class="token punctuation">)</span> <span class="token comment">// money最终结果可能不是100</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="_3-3-读写锁-sync-rwmutex"><a href="#_3-3-读写锁-sync-rwmutex" class="header-anchor">#</a> 3.3 读写锁 sync.RWMutex</h3> <hr> <p>互斥锁是完全互斥的（无论是读还是写），而并发读操作可以不加锁，这样可以提升性能。读写锁非常适合读多写少的场景。</p> <p>示例：设读操作消耗1ms，写操作消耗10ms，分别启动<strong>1000</strong>个读、<strong>10</strong>个写协程测试耗时</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// 使用互斥锁</span>
+
+<span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+<span class="token keyword">var</span> lock sync<span class="token punctuation">.</span>Mutex
+<span class="token keyword">var</span> monney <span class="token operator">=</span> <span class="token number">100</span>
+
+<span class="token keyword">func</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Millisecond <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	lock<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	monney <span class="token operator">+=</span> <span class="token number">1</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Millisecond <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">)</span>
+	lock<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	start <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+		<span class="token keyword">go</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+		<span class="token keyword">go</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;spend time =&gt;&quot;</span><span class="token punctuation">,</span> time<span class="token punctuation">.</span><span class="token function">Since</span><span class="token punctuation">(</span>start<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// 使用读写锁</span>
+<span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+<span class="token keyword">var</span> lock sync<span class="token punctuation">.</span>RWMutex
+<span class="token keyword">var</span> monney <span class="token operator">=</span> <span class="token number">100</span>
+
+<span class="token keyword">func</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">RLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Millisecond <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	lock<span class="token punctuation">.</span><span class="token function">RUnlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	lock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	monney <span class="token operator">+=</span> <span class="token number">1</span>
+	time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Millisecond <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">)</span>
+	lock<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	start <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+		<span class="token keyword">go</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">1000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+		<span class="token keyword">go</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;spend time =&gt;&quot;</span><span class="token punctuation">,</span> time<span class="token punctuation">.</span><span class="token function">Since</span><span class="token punctuation">(</span>start<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><aside>
+💡 测试结果：基于互斥锁约耗时1.2秒，基于读写锁约耗时100毫秒
+</aside> <p>读写锁的基本用法：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">var</span> wrlock sync<span class="token punctuation">.</span>RWMutex
+
+wrlock<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>   <span class="token comment">// 上写锁</span>
+wrlock<span class="token punctuation">.</span><span class="token function">ULock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// 解写锁</span>
+wrlock<span class="token punctuation">.</span><span class="token function">RLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// 上读锁</span>
+wrlock<span class="token punctuation">.</span><span class="token function">ULock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// 解读锁</span>
+</code></pre></div><h3 id="_3-4-条件变量-sync-cond"><a href="#_3-4-条件变量-sync-cond" class="header-anchor">#</a> 3.4 条件变量 sync.Cond</h3> <hr> <p>让一组goroutine在满足特定条件时被唤醒</p> <ul><li>cond.Lock()</li> <li>cond.Unlock()</li> <li>cond.Wait()</li> <li>cond.Signal()：随机通知一个</li> <li>cond.Broadcase()：通知所有</li></ul> <hr> <p>保证某段代码只执行一次</p> <h2 id="_4-原子操作-atomic"><a href="#_4-原子操作-atomic" class="header-anchor">#</a> 4. 原子操作 atomic</h2> <p>加锁涉及到内核态的上下文切换，代价较高。对与基本数据类型的资源竞争，Go 的 atomic 包提供用户态的原子操作，性能更高。</p> <p>示例：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;fmt&quot;</span>
+	<span class="token string">&quot;sync&quot;</span>
+	<span class="token string">&quot;sync/atomic&quot;</span>
+	<span class="token string">&quot;time&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">var</span> x <span class="token builtin">int64</span>
+<span class="token keyword">var</span> l sync<span class="token punctuation">.</span>Mutex
+<span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+
+<span class="token comment">// 普通版加函数</span>
+<span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// x = x + 1</span>
+    x<span class="token operator">++</span> <span class="token comment">// 等价于上面的操作</span>
+    wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 互斥锁版加函数</span>
+<span class="token keyword">func</span> <span class="token function">mutexAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    l<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    x<span class="token operator">++</span>
+    l<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 原子操作版加函数</span>
+<span class="token keyword">func</span> <span class="token function">atomicAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    atomic<span class="token punctuation">.</span><span class="token function">AddInt64</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>x<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    start <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token comment">// go add()       // 普通版add函数 不是并发安全的</span>
+        <span class="token comment">// go mutexAdd()  // 加锁版add函数 是并发安全的，但是加锁性能开销大</span>
+        <span class="token keyword">go</span> <span class="token function">atomicAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 原子操作版add函数 是并发安全，性能优于加锁版</span>
+    <span class="token punctuation">}</span>
+    wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    end <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>end<span class="token punctuation">.</span><span class="token function">Sub</span><span class="token punctuation">(</span>start<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="参考文档"><a href="#参考文档" class="header-anchor">#</a> 参考文档</h2> <ul><li><p><a href="https://time.geekbang.org/column/article/478192" target="_blank" rel="noopener noreferrer">34｜并发：如何使用共享变量？-极客时间<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></li> <li><p><a href="https://chai2010.cn/advanced-go-programming-book/ch1-basic/ch1-06-goroutine.html" target="_blank" rel="noopener noreferrer">常见的并发模式 - Go语言高级编程<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></li></ul></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#_1-goroutine" title="1. goroutine">1. goroutine</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_2-基于csp模型实现并发" title="2. 基于CSP模型实现并发">2. 基于CSP模型实现并发</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_2-1-channel" title="2.1 channel">2.1 channel</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_2-2-select多路复用" title="2.2 select多路复用">2.2 select多路复用</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_3-基于共享变量实现并发" title="3. 基于共享变量实现并发">3. 基于共享变量实现并发</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_3-1-同步-sync-waitgroup" title="3.1 同步 sync.WaitGroup">3.1 同步 sync.WaitGroup</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_3-2-互斥锁-sync-mutex" title="3.2 互斥锁 sync.Mutex">3.2 互斥锁 sync.Mutex</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_3-3-读写锁-sync-rwmutex" title="3.3 读写锁 sync.RWMutex">3.3 读写锁 sync.RWMutex</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_3-4-条件变量-sync-cond" title="3.4 条件变量 sync.Cond">3.4 条件变量 sync.Cond</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_4-原子操作-atomic" title="4. 原子操作 atomic">4. 原子操作 atomic</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#参考文档" title="参考文档">参考文档</a></div></div></div></div> <footer class="footer" data-v-8eb634d6><div class="footer-left-wrap" data-v-8eb634d6><ul class="contact" data-v-8eb634d6><li class="contact-item" data-v-8eb634d6><a href="https://github.com/awesomexu" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-8eb634d6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-8eb634d6><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-8eb634d6></path></svg>
+          
+        </a></li><li class="contact-item" data-v-8eb634d6><a href="mailto:xcc_mail@163.com" class="nav-link external" data-v-8eb634d6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-8eb634d6><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-8eb634d6></path><polyline points="22,6 12,13 2,6" data-v-8eb634d6></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-8eb634d6><ul class="copyright" data-v-8eb634d6><li class="copyright-item" data-v-8eb634d6><a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-8eb634d6>Privacy Policy</a></li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.8f62a037.js" defer></script><script src="/assets/js/6.b8e708a3.js" defer></script><script src="/assets/js/3.3f44ea24.js" defer></script><script src="/assets/js/43.23bd57f8.js" defer></script>
+  </body>
+</html>
