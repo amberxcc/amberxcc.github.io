@@ -1,0 +1,1 @@
+import{_ as t,H as o,o as n,c as a,J as r}from"./chunks/framework.8ca2618e.js";const h=JSON.parse('{"title":"","description":"","frontmatter":{"layout":"home"},"headers":[],"relativePath":"index.md"}'),s={name:"index.md"};function c(i,d,p,_,m,l){const e=o("VPBArchives");return n(),a("div",null,[r(e)])}const u=t(s,[["render",c]]);export{h as __pageData,u as default};

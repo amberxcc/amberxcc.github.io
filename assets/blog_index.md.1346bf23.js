@@ -1,0 +1,1 @@
+import{_ as o,H as t,o as n,c as a,J as r}from"./chunks/framework.8ca2618e.js";const u=JSON.parse('{"title":"","description":"","frontmatter":{"layout":"home"},"headers":[],"relativePath":"blog/index.md"}'),s={name:"blog/index.md"};function c(d,m,p,_,i,l){const e=t("VPBHome");return n(),a("div",null,[r(e)])}const x=o(s,[["render",c]]);export{u as __pageData,x as default};
